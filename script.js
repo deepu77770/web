@@ -136,7 +136,7 @@ if (menuButton && navigation) {
 }
 
 const revealTargets = document.querySelectorAll(
-  ".hero-copy, .hero-art, .proof-strip, .section-heading, .service-card, .process-copy, .step, .network-banner > *, .contact-form",
+  ".hero-copy, .hero-art, .proof-strip, .section-heading, .service-card, .process-copy, .step, .network-banner > *",
 );
 
 if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -155,72 +155,4 @@ if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-mot
   });
 } else {
   revealTargets.forEach((target) => target.classList.add("is-visible"));
-}
-
-const contactForm = document.querySelector("#contact-form");
-const formStatus = document.querySelector("#form-status");
-
-if (contactForm instanceof HTMLFormElement && formStatus instanceof HTMLElement) {
-  const fields = [...contactForm.querySelectorAll("input, select, textarea")];
-
-  const setFieldState = (field) => {
-    if (!(field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement || field instanceof HTMLSelectElement)) {
-      return;
-    }
-
-    const isInvalid = field.validity && !field.validity.valid;
-    field.setAttribute("aria-invalid", String(isInvalid));
-  };
-
-  fields.forEach((field) => {
-    field.addEventListener("blur", () => setFieldState(field));
-    field.addEventListener("input", () => setFieldState(field));
-  });
-
-  contactForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const submitButton = contactForm.querySelector('button[type="submit"]');
-    if (!(submitButton instanceof HTMLButtonElement)) return;
-
-    const isValid = contactForm.reportValidity();
-    if (!isValid) {
-      formStatus.classList.remove("is-success");
-      formStatus.classList.add("is-error");
-      formStatus.textContent = "Please complete the highlighted fields and try again.";
-      fields.forEach((field) => setFieldState(field));
-      return;
-    }
-
-    formStatus.textContent = "";
-    formStatus.classList.remove("is-error", "is-success");
-    submitButton.disabled = true;
-
-    try {
-      const formData = new FormData(contactForm);
-      const response = await fetch("/api/inquiries", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(Object.fromEntries(formData.entries())),
-      });
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || "We could not send your inquiry. Please try again.");
-      }
-
-      contactForm.reset();
-      fields.forEach((field) => field.setAttribute("aria-invalid", "false"));
-      formStatus.classList.remove("is-error");
-      formStatus.classList.add("is-success");
-      formStatus.textContent = result.message;
-    } catch (error) {
-      formStatus.classList.remove("is-success");
-      formStatus.classList.add("is-error");
-      formStatus.textContent = error instanceof Error
-        ? error.message
-        : "We could not send your inquiry. Please try again.";
-    } finally {
-      submitButton.disabled = false;
-    }
-  });
 }
