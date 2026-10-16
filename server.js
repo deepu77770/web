@@ -32,24 +32,8 @@ export function createApp() {
     response.sendFile(path.join(projectRoot, "script.js"));
   });
 
-  app.get("/assets/panda-image.png", (_request, response) => {
-    response.sendFile(path.join(projectRoot, "assets", "baby-panda-loading.png"));
-  });
-
-  app.get("/assets/loading-character.png", (_request, response) => {
-    response.sendFile(path.join(projectRoot, "assets", "baby-panda-loading.png"));
-  });
-
-  app.get("/assets/baby-panda-loading.svg", (_request, response) => {
-    response.sendFile(path.join(projectRoot, "assets", "baby-panda-loading.png"));
-  });
-
-  app.get("/assets/baby-panda-loading.png", (_request, response) => {
-    response.sendFile(path.join(projectRoot, "assets", "baby-panda-loading.png"));
-  });
-
-  app.get("/assets/baby-panda-cutout.png", (_request, response) => {
-    response.sendFile(path.join(projectRoot, "assets", "baby-panda-cutout.png"));
+  app.get("/assets/verdant-ledger-mark.svg", (_request, response) => {
+    response.sendFile(path.join(projectRoot, "assets", "verdant-ledger-mark.svg"));
   });
 
   app.use("/api", (_request, response) => {

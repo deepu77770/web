@@ -1,60 +1,7 @@
 const menuButton = document.querySelector(".menu-toggle");
 const navigation = document.querySelector("#primary-navigation");
-const introSplash = document.querySelector("#intro-splash");
-const skipIntroButton = document.querySelector("#opening-skip");
-const loadingPercentage = document.querySelector("#loading-percentage");
-const loadingProgress = document.querySelector("#loading-progress");
-const loadingTrack = document.querySelector("#loading-track");
 
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-if (
-  introSplash instanceof HTMLElement &&
-  loadingPercentage instanceof HTMLElement &&
-  loadingProgress instanceof HTMLElement &&
-  loadingTrack instanceof HTMLElement
-) {
-  let animationFrame = 0;
-  let finishTimeout = 0;
-  const loadingDuration = 3000;
-
-  const setLoadingProgress = (value) => {
-    const percentage = Math.max(0, Math.min(100, value));
-    loadingPercentage.textContent = `${percentage}%`;
-    loadingProgress.style.width = `${percentage}%`;
-    loadingTrack.setAttribute("aria-valuenow", String(percentage));
-  };
-
-  const dismissIntro = () => {
-    window.cancelAnimationFrame(animationFrame);
-    window.clearTimeout(finishTimeout);
-    setLoadingProgress(100);
-    introSplash.classList.add("is-done");
-    introSplash.setAttribute("aria-hidden", "true");
-    document.documentElement.classList.add("intro-finished");
-  };
-
-  skipIntroButton?.addEventListener("click", dismissIntro, { once: true });
-
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    dismissIntro();
-  } else {
-    let startedAt;
-    const updateProgress = (now) => {
-      if (startedAt === undefined) startedAt = now;
-      const progress = Math.min((now - startedAt) / loadingDuration, 1);
-      setLoadingProgress(Math.floor(progress * 100));
-
-      if (progress === 1) {
-        finishTimeout = window.setTimeout(dismissIntro, 180);
-      } else {
-        animationFrame = window.requestAnimationFrame(updateProgress);
-      }
-    };
-
-    animationFrame = window.requestAnimationFrame(updateProgress);
-  }
-}
 
 if (menuButton && navigation) {
   document.documentElement.classList.add("js");
