@@ -52,10 +52,6 @@ export function createApp() {
     response.sendFile(path.join(projectRoot, "assets", "baby-panda-cutout.png"));
   });
 
-  app.get("/assets/hanging-spider-cutout.png", (_request, response) => {
-    response.sendFile(path.join(projectRoot, "assets", "hanging-spider-cutout.png"));
-  });
-
   app.use("/api", (_request, response) => {
     response.status(404).json({ message: "API endpoint not found." });
   });

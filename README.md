@@ -3,11 +3,6 @@
 Verdant Ledger is a Node.js/Express website for connecting businesses with ESG
 and sustainability professionals. Visitors can contact the team by email.
 
-The homepage includes a supplied Spider-Man illustration suspended on a web.
-The character gently swings and blinks while the page is open, and follows the
-visitor's scroll position on an extending web; these animations are disabled
-when reduced motion is requested.
-
 ## Requirements
 
 - Node.js 20 or newer

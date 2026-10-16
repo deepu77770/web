@@ -7,45 +7,6 @@ const loadingProgress = document.querySelector("#loading-progress");
 const loadingTrack = document.querySelector("#loading-track");
 
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
-const hangingSpider = document.querySelector(".web-swing");
-if (
-  hangingSpider instanceof HTMLElement &&
-  !motionPreference.matches
-) {
-  let spiderFrame = 0;
-  let currentOffset = 0;
-  let targetOffset = 0;
-  const updateSpiderPosition = () => {
-    spiderFrame = 0;
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollProgress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
-    const startTop = Number.parseFloat(
-      window.getComputedStyle(hangingSpider).getPropertyValue("--spider-start-top"),
-    ) || 72;
-    const travelDistance = Math.max(
-      window.innerHeight - hangingSpider.offsetHeight - startTop - 24,
-      0,
-    );
-    targetOffset = travelDistance * scrollProgress;
-    const offsetDelta = targetOffset - currentOffset;
-    currentOffset += offsetDelta * 0.18;
-    if (Math.abs(offsetDelta) < 0.15) currentOffset = targetOffset;
-    hangingSpider.style.setProperty("--spider-scroll-offset", `${currentOffset}px`);
-
-    if (Math.abs(targetOffset - currentOffset) >= 0.15) {
-      spiderFrame = window.requestAnimationFrame(updateSpiderPosition);
-    }
-  };
-  const scheduleSpiderPosition = () => {
-    if (!spiderFrame) {
-      spiderFrame = window.requestAnimationFrame(updateSpiderPosition);
-    }
-  };
-
-  window.addEventListener("scroll", scheduleSpiderPosition, { passive: true });
-  window.addEventListener("resize", scheduleSpiderPosition);
-  updateSpiderPosition();
-}
 
 if (
   introSplash instanceof HTMLElement &&
